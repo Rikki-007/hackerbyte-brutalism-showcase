@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   HACKERBYTE — NEO-BRUTALISM DESIGN TOKENS
+   Rigid geometry. Hard edges. No blur. No apology.
+   ========================================================================== */
+@theme {
+  /* -- palette -------------------------------------------------------- */
+  --color-hb-black: #000000;
+  --color-hb-white: #ffffff;
+  --color-hb-offwhite: #f5f3ee;
+  --color-hb-green: #00ff66;
+  --color-hb-green-dim: #00cc52;
+  --color-hb-yellow: #ffee00;
+  --color-hb-pink: #ff2e93;
+  --color-hb-red: #ff3b30;
+  --color-hb-blue: #00b7ff;
+  --color-hb-gray: #d9d6cd;
+
+  /* -- type ------------------------------------------------------------ */
+  --font-display: "Archivo Black", "Arial Black", sans-serif;
+  --font-sans: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Space Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+  /* -- hard shadows: zero blur, offset only ----------------------------- */
+  --shadow-brutal-sm: 2px 2px 0 0 #000;
+  --shadow-brutal: 4px 4px 0 0 #000;
+  --shadow-brutal-lg: 8px 8px 0 0 #000;
+  --shadow-brutal-xl: 12px 12px 0 0 #000;
+  --shadow-brutal-green: 4px 4px 0 0 #00ff66;
+  --shadow-brutal-yellow: 4px 4px 0 0 #ffee00;
+  --shadow-brutal-pink: 4px 4px 0 0 #ff2e93;
+
+  /* -- rigid geometry: no rounding anywhere ----------------------------- */
+  --radius-none: 0px;
+
+  --animate-marquee: marquee 22s linear infinite;
+  --animate-flicker: flicker 3.2s linear infinite;
+}
+
+@layer base {
+  * {
+    border-radius: 0 !important;
+  }
+
+  html {
+    background: var(--color-hb-offwhite);
+  }
+
+  body {
+    @apply bg-hb-offwhite text-hb-black font-sans antialiased;
+    background-image:
+      linear-gradient(var(--color-hb-black) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-hb-black) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
+    background-attachment: fixed;
+    opacity: 1;
+  }
+
+  #root {
+    background: transparent;
+  }
+
+  ::selection {
+    background: var(--color-hb-black);
+    color: var(--color-hb-green);
+  }
+
+  /* scrollbar: square, no gradients */
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-hb-white);
+    border-left: 2px solid #000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-hb-black);
+    border: 3px solid var(--color-hb-white);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-hb-green-dim);
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display uppercase tracking-tight;
+  }
+
+  code, pre, kbd {
+    @apply font-mono;
+  }
+
+  /* kill soft transitions globally; snap-state is opt-in via .brutal-press */
+  a, button {
+    transition: none;
+  }
+}
+
+@layer components {
+  /* Instant-snap physical press: element travels into its own shadow */
+  .brutal-press {
+    box-shadow: var(--shadow-brutal);
+    transition: none;
+  }
+  .brutal-press:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 0 #000;
+  }
+
+  .brutal-press-sm {
+    box-shadow: var(--shadow-brutal-sm);
+    transition: none;
+  }
+  .brutal-press-sm:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 #000;
+  }
+
+  .brutal-card {
+    @apply bg-hb-white border-2 border-hb-black;
+    box-shadow: var(--shadow-brutal);
+  }
+
+  .noise-block {
+    background-image: repeating-linear-gradient(
+      45deg,
+      #000 0,
+      #000 1px,
+      transparent 1px,
+      transparent 8px
+    );
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93% { opacity: 0.4; }
+  95% { opacity: 1; }
+  96% { opacity: 0.5; }
+  97% { opacity: 1; }
+}
